@@ -19,7 +19,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,46 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     String id = editID.getText().toString();
                     String pw = editPW.getText().toString();
 
-                    new AsyncTask<String, Void, Response>() {
-                        String id, pw;
-                        OkHttpClient client = new OkHttpClient();
-
-                        @Override
-                        protected void onPreExecute() {
-                        }
-
-                        @Override
-                        protected Response doInBackground(String... params) {
-                            id = params[0];
-                            pw = params[1];
-
-                            Request request = new Request.Builder()
-                                    .url("http://180.65.243.142:8080/LoginWebServer/GetData?act=login&id="+id+"&pw="+pw)
-                                    .build();
-                            try{
-                                Response response = client.newCall(request).execute();
-                                return response;
-                            }catch(IOException ex){
-                                ex.printStackTrace();
-                            }
-                            return null;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Response response) {
-                            try {
-                                if (response.body().string().equals("success")){
-                                    //채팅 테스트
-                                    Intent intentChat = new Intent(MainActivity.this, ChatActivity.class);
-                                    intentChat.putExtra("id",id);
-                                    startActivity(intentChat);
-                                } else
-                                    Toast.makeText(getApplicationContext(), "ID or Password 가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
-                            }catch (IOException ex){
-                                ex.printStackTrace();
-                            }
-                        }
-                    }.execute(id, pw);
+                    userLogin(id, pw);
                 }
             }
         });
@@ -107,5 +67,48 @@ public class MainActivity extends AppCompatActivity {
             editID.setError(null);
             return true;
         }
+    }
+
+    private void userLogin(String UserID, String UserPW){
+        new AsyncTask<String, Void, Response>() {
+            String id, pw;
+            OkHttpClient client = new OkHttpClient();
+
+            @Override
+            protected void onPreExecute() {
+            }
+
+            @Override
+            protected Response doInBackground(String... params) {
+                id = params[0];
+                pw = params[1];
+
+                Request request = new Request.Builder()
+                        .url("http://10.0.2.2:8080/LoginWebServer/GetData?act=login&id="+id+"&pw="+pw)
+                        .build();
+                try{
+                    Response response = client.newCall(request).execute();
+                    return response;
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Response response) {
+                try {
+                    if (response.body().string().equals("success")){
+                        //채팅 테스트
+                        Intent intentChat = new Intent(MainActivity.this, ChatActivity.class);
+                        intentChat.putExtra("id",id);
+                        startActivity(intentChat);
+                    } else
+                        Toast.makeText(getApplicationContext(), "ID or Password 가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                }catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }.execute(UserID, UserPW);
     }
 }
