@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                             pw = params[1];
 
                             Request request = new Request.Builder()
-                                    .url("http://180.65.243.142:8080/LoginWebServer/GetData?act=register&id="+id+"&pw="+pw)
+                                    .url("http://10.0.2.2:8080/LoginWebServer/GetData?act=register&id="+id+"&pw="+pw)
                                     .build();
                             try{
                                 Response response = client.newCall(request).execute();

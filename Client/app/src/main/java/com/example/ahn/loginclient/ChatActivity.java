@@ -80,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
                 while(true) {
                     SystemClock.sleep(2000);
                     lock();
-                    Request request = new Request.Builder().url("http://180.65.243.142:8080/LoginWebServer/GetData?act=syn&idx=" + clientIdx).build();
+                    Request request = new Request.Builder().url("http://10.0.2.2:8080/LoginWebServer/GetData?act=syn&idx=" + clientIdx).build();
                     try {
                         Response response = client.newCall(request).execute();
                         numOfNewChat = Integer.parseInt(response.body().string());
